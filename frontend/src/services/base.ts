@@ -16,7 +16,12 @@ const API_BASE = ENVIRONMENT === "development"
 
 const SOCKET_BASE = ENVIRONMENT === "development"
   ? import.meta.env.VITE_SOCKET_BASE
-  : "wss://ekms-api.projects.serhatkeskin.com/wsapi";
+  : (() => {
+      if (typeof window !== "undefined" && window.location.hostname.startsWith("ekms.")) {
+        return `wss://${window.location.hostname.replace(/^ekms\./, "ekms-api.")}/wsapi`;
+      }
+      return "wss://ekms-api.projects.serhatkeskin.com/wsapi";
+    })();
 
 console.log("API_BASE", API_BASE);
 console.log("SOCKET_BASE", SOCKET_BASE);
