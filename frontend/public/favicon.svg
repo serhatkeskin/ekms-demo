@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e3a5f"/>
+      <stop offset="100%" style="stop-color:#2d6a9f"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="12" fill="url(#bg)"/>
+  <!-- Document icon -->
+  <rect x="14" y="10" width="28" height="36" rx="3" fill="none" stroke="#ffffff" stroke-width="2.5"/>
+  <line x1="19" y1="19" x2="36" y2="19" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+  <line x1="19" y1="25" x2="36" y2="25" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+  <line x1="19" y1="31" x2="30" y2="31" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+  <!-- Knowledge nodes -->
+  <circle cx="46" cy="42" r="5" fill="#4da6e8"/>
+  <circle cx="36" cy="52" r="4" fill="#4da6e8" opacity="0.8"/>
+  <circle cx="54" cy="54" r="3.5" fill="#4da6e8" opacity="0.7"/>
+  <line x1="46" y1="42" x2="36" y2="52" stroke="#4da6e8" stroke-width="1.5" opacity="0.6"/>
+  <line x1="46" y1="42" x2="54" y2="54" stroke="#4da6e8" stroke-width="1.5" opacity="0.6"/>
+</svg>
