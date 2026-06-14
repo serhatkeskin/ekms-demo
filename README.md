@@ -2,7 +2,7 @@
 
 A full-stack knowledge management platform with a rich block-based editor, hierarchical page structure, and collaborative workspace organization.
 
-**Live demo:** [ekms.avenholding.com](https://ekms.avenholding.com)
+**Live demo:** [ekms.projects.serhatkeskin.com](https://ekms.projects.serhatkeskin.com)
 
 > For demo credentials, reach out via [LinkedIn](https://www.linkedin.com/in/serhat-keskin).
 
