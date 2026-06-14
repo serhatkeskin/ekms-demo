@@ -1,0 +1,2 @@
+PUBLIC_MEDIA_PREFIX = "public"
+PRIVATE_MEDIA_PREFIX = "private"

@@ -1,0 +1,108 @@
+/* components/Editor/BlockEditor.css */
+
+.block-editor-container {
+    position: relative;
+    width: 100%;
+  }
+  
+  .block-editor-input .MuiInputBase-root {
+    padding: 8px 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    transition: all 0.2s ease;
+    border-radius: 4px;
+  }
+  
+  .block-editor-input .MuiInputBase-root:focus-within {
+    box-shadow: 0 0 0 2px rgba(255, 152, 0, 0.2);
+  }
+  
+  .block-editor-input .MuiInputBase-multiline {
+    padding: 8px 12px;
+  }
+  
+  .block-editor-input textarea {
+    font-family: inherit;
+    resize: none;
+  }
+  
+  /* Compact mode */
+  .block-editor-input.compact .MuiInputBase-root {
+    padding: 4px 8px;
+    font-size: 13px;
+  }
+  
+  /* Buttons row */
+  .block-editor-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+  }
+  
+  /* Loader styling */
+  .block-editor-loader {
+    display: inline-flex;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  
+  /* Placeholder styling */
+  .block-editor-input .MuiInputBase-input::placeholder {
+    color: rgba(0, 0, 0, 0.4);
+    opacity: 1;
+  }
+  
+  /* Make sure the mention dropdown is visible */
+  .block-editor-container .MuiPopper-root {
+    z-index: 1500;
+  }
+  
+  /* For dark mode compatibility */
+  .dark-mode .block-editor-input .MuiInputBase-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  
+  .dark-mode .block-editor-input .MuiInputBase-root {
+    background-color: rgba(30, 30, 30, 0.9);
+    color: rgba(255, 255, 255, 0.9);
+  }
+  
+  /* Hover effect for buttons */
+  .block-editor-buttons .MuiButton-root:hover {
+    transform: translateY(-1px);
+    transition: transform 0.2s ease;
+  }
+  
+  /* Style for disabled state */
+  .block-editor-input.Mui-disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
+  /* Focus outline */
+  .block-editor-input .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: #ff9800;
+    border-width: 2px;
+  }
+  
+  /* Error state */
+  .block-editor-input.error .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+    border-color: #f44336;
+  }
+  
+  /* Mention styles */
+  .block-editor-mention {
+    color: #ff9800;
+    font-weight: 600;
+  }
+  
+  /* Override default button styles for cancel */
+  .block-editor-cancel-btn.MuiButton-root {
+    text-transform: none;
+    font-weight: normal;
+    opacity: 0.7;
+  }
+  
+  .block-editor-cancel-btn.MuiButton-root:hover {
+    opacity: 1;
+  }

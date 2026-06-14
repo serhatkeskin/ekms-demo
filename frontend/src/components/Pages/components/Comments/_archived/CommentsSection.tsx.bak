@@ -1,0 +1,386 @@
+// src/components/Pages/CommentsSection.jsx - Enhanced with BlockEditor
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import MDBox from "components/MDBox/MDBox";
+import MDTypography from 'components/MDTypography/MDTypography';
+import MDButton from 'components/MDButton/MDButton';
+import MDAvatar from 'components/MDAvatar/MDAvatar';
+import Icon from '@mui/material/Icon';
+import Divider from '@mui/material/Divider';
+import pageApi from 'services/pageApi';
+import { formatDistanceToNow } from 'date-fns';
+import 'components/Pages/components/Comments/CommentsSection.css';
+
+// Import the components and utils
+import BlockEditor from 'components/Editor/BlockEditor';
+import FormattedTextWithMentions from 'components/Text/FormattedTextWithMentions';
+import { notifyMentionedUsers } from 'utilities/mentionUtils';
+
+const CommentsSection = ({ pageSlug, pageId, comments = [], pageTitle = '', pageContext = {} }: any) => {
+  const [pageComments, setPageComments] = useState<any>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<any>(null);
+  const [newComment, setNewComment] = useState('');
+  const [replyingTo, setReplyingTo] = useState<any>(null);
+  const [replyText, setReplyText] = useState('');
+  const commentInputRef = useRef(null);
+  const replyInputRef = useRef(null);
+  const hasFetchedRef = useRef(false);
+
+  // Fetch comments on mount - with better dependency handling
+  useEffect(() => {
+    // Skip if we already have comments passed as props
+    if (comments.length > 0) {
+      setPageComments(comments);
+      return;
+    }
+
+    // Skip if slug is missing
+    if (!pageSlug) {
+      return;
+    }
+
+    // Use a ref to avoid duplicate fetches
+    if (hasFetchedRef.current) {
+      return;
+    }
+
+    const fetchComments = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        hasFetchedRef.current = true;
+        
+        const fetchedComments = await pageApi.getPageComments(pageSlug, { type: "page" });
+        setPageComments((fetchedComments as any).content || fetchedComments);
+      } catch (err) {
+        console.error('Error fetching comments:', err);
+        setError('Failed to load comments');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchComments();
+  }, [pageSlug, comments.length]);  // Only depend on slug and comments.length, not the entire comments array
+
+  // Focus the reply input when replying
+  useEffect(() => {
+    if (replyingTo !== null && replyInputRef.current) {
+      replyInputRef.current.focus();
+    }
+  }, [replyingTo]);
+
+  // Handle submitting a new top-level comment
+  const submitComment = useCallback(async (value, mentionedUsers, e) => {
+    if (e) {
+      e.preventDefault();
+    }
+    
+    if (!value.trim() || !pageSlug) return;
+
+    try {
+      setLoading(true);
+      const commentData = {
+        text: value
+        // No parent field for top-level comments
+      };
+
+      const createdComment = await pageApi.createComment(pageSlug, commentData);
+      
+      // Add the new comment to the list and ensure state update
+      setPageComments(prevComments => [...prevComments, (createdComment as any).content || createdComment]);
+      
+      // Send notifications to mentioned users
+      await notifyMentionedUsers(value, {
+        sourceType: 'comment_section',
+        sourceId: (createdComment as any).content?.id || (createdComment as any).id,
+        commentId: (createdComment as any).content?.id || (createdComment as any).id,
+        pageSlug,
+        pageTitle,
+        pageContext
+      });
+      
+      // Clear the input
+      setNewComment('');
+    } catch (err) {
+      console.error('Error submitting comment:', err);
+      setError('Failed to submit comment');
+    } finally {
+      setLoading(false);
+    }
+  }, [pageSlug, pageTitle, pageContext]);
+
+  // Handle submitting a reply to a comment
+  const submitReply = useCallback(async (value, mentionedUsers, e) => {
+    if (e) {
+      e.preventDefault();
+    }
+    
+    if (!value || !value.trim() || replyingTo === null || !pageSlug) return;
+
+    try {
+      setLoading(true);
+      const replyData = {
+        text: value,
+        parent: replyingTo
+      };
+
+      const createdReply = await pageApi.createComment(pageSlug, replyData);
+      
+      // Update the comments list with the new reply and ensure state update
+      setPageComments(prevComments => [...prevComments, createdReply.content]);
+      
+      // Get the parent comment for context
+      const parentComment = pageComments.find(c => c.id === replyingTo);
+      
+      // Send notifications to mentioned users
+      await notifyMentionedUsers(value, {
+        sourceType: 'comment_section',
+        sourceId: createdReply.content.id,
+        commentId: createdReply.content.id,
+        parentCommentId: parentComment?.id,
+        parentCommenterUsername: parentComment?.created_by?.username,
+        pageSlug,
+        pageTitle,
+        pageContext
+      });
+      
+      // Reset reply state
+      setReplyingTo(null);
+      setReplyText('');
+    } catch (err) {
+      console.error('Error submitting reply:', err);
+      setError('Failed to submit reply');
+    } finally {
+      setLoading(false);
+    }
+  }, [replyingTo, pageSlug, pageComments, pageTitle, pageContext]);
+
+  // Handle key press for comment input
+  const handleKeyPress = useCallback((e, isReply = false) => {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+      if (isReply) {
+        submitReply(replyText, [], e);
+      } else {
+        submitComment(newComment, [], e);
+      }
+    }
+  }, [submitReply, submitComment, newComment, replyText]);
+
+  // Format the date to relative time (e.g., "2 hours ago")
+  const formatDate = useCallback((dateString) => {
+    try {
+      const date = new Date(dateString);
+      return formatDistanceToNow(date, { addSuffix: true });
+    } catch (e) {
+      return dateString;
+    }
+  }, []);
+
+  // Process the comments data from API to ensure proper structure
+  const processComment = useCallback((comment) => {
+    // Ensure we have the right format of data
+    return {
+      id: comment.id,
+      text: comment.text,
+      created_at: comment.created_at,
+      created_by: comment.created_by || {},
+      parent: comment.parent
+    };
+  }, []);
+
+  // Organize comments into a tree structure
+  const organizeCommentsIntoTree = useCallback(() => {
+    const commentMap: any = {};
+    const rootComments = [];
+
+    // Process all comments and create a map
+    pageComments.forEach(comment => {
+      const processedComment = processComment(comment);
+      commentMap[processedComment.id] = {
+        ...processedComment,
+        replies: []
+      };
+    });
+
+    // Organize into tree structure by populating replies arrays
+    Object.values(commentMap).forEach((comment: any) => {
+      if (comment.parent) {
+        // This is a reply, add it to the parent's replies array if parent exists
+        if (commentMap[comment.parent]) {
+          commentMap[comment.parent].replies.push(comment);
+        } else {
+          // If parent doesn't exist, treat as root comment
+          rootComments.push(comment);
+        }
+      } else {
+        // This is a root comment
+        rootComments.push(comment);
+      }
+    });
+
+    return rootComments;
+  }, [pageComments, processComment]);
+
+  // Handle user mention callback from comment input
+  const handleCommentMention = useCallback((user) => {
+    console.log('User mentioned in comment:', user);
+    // You can add any additional logic here, such as 
+    // showing a notification or tracking mentions
+  }, []);
+
+  // Handle user mention callback from reply input
+  const handleReplyMention = useCallback((user) => {
+    console.log('User mentioned in reply:', user);
+  }, []);
+
+  // Recursive function to render a comment and all its replies
+  const renderComment = useCallback((comment, level = 0) => {
+    const isReplyOpen = replyingTo === comment.id;
+    const commentKey = `comment-${comment.id}`;
+
+    return (
+      <div key={commentKey} className="comment-item" style={{ marginLeft: `${level * 24}px` }}>
+        <MDBox display="flex" mb={1}>
+          <MDAvatar 
+            src={(comment.created_by && comment.created_by.avatar) || '/static/images/avatars/default.png'} 
+            alt={(comment.created_by && comment.created_by.username) || 'User'} 
+            size="sm" 
+          />
+          <MDBox ml={1} flex={1}>
+            <MDBox display="flex" justifyContent="space-between" alignItems="center">
+              <MDTypography variant="button" fontWeight="bold">
+                {(comment.created_by && comment.created_by.username) || 'Anonymous User'}
+              </MDTypography>
+              <MDTypography variant="caption" color="text">
+                {formatDate(comment.created_at)}
+              </MDTypography>
+            </MDBox>
+            
+            {/* Render comment text with formatted mentions */}
+            <FormattedTextWithMentions 
+              text={comment.text} 
+              variant="body2" 
+              color="text" 
+            />
+            
+            <MDBox mt={1} display="flex" alignItems="center">
+              <MDButton 
+                variant="text" 
+                color="warning" 
+                size="small"
+                onClick={() => setReplyingTo(isReplyOpen ? null : comment.id)}
+              >
+                <Icon fontSize="small">reply</Icon>&nbsp;
+                {isReplyOpen ? 'Cancel' : 'Reply'}
+              </MDButton>
+            </MDBox>
+
+            {/* Reply input form with BlockEditor */}
+            {isReplyOpen && (
+              <MDBox mt={1}>
+                <BlockEditor
+                  value={replyText}
+                  onChange={(newValue) => setReplyText(newValue)}
+                  onSubmit={(value, mentions, e) => submitReply(value, mentions, e)}
+                  onCancel={() => setReplyingTo(null)}
+                  onMention={handleReplyMention}
+                  placeholder={`Reply to ${(comment.created_by && comment.created_by.username) || 'this comment'}... (Use @ to mention users)`}
+                  multiline={true}
+                  minRows={2}
+                  inputRef={replyInputRef}
+                  loading={loading}
+                  submitText="Post Reply"
+                  submitColor="warning"
+                  showCancel={true}
+                  variant="outlined"
+                  size="small"
+                  textFieldProps={{
+                    onKeyDown: (e) => handleKeyPress(e, true)
+                  }}
+                />
+              </MDBox>
+            )}
+          </MDBox>
+        </MDBox>
+
+        {/* Render replies */}
+        {comment.replies && comment.replies.length > 0 && (
+          <div className="comment-replies">
+            {comment.replies.map(reply => renderComment(reply, level + 1))}
+          </div>
+        )}
+      </div>
+    );
+  }, [replyingTo, handleReplyMention, submitReply, handleKeyPress, formatDate, loading, replyText]);
+
+  // Get the tree-structured comments
+  const commentTree = organizeCommentsIntoTree();
+
+  return (
+    <div className="comments-section">
+      <MDBox mb={3}>
+        <MDTypography variant="h6" fontWeight="medium">
+          Comments ({pageComments.length})
+        </MDTypography>
+        <Divider />
+      </MDBox>
+      
+      {/* New comment input with BlockEditor */}
+      <MDBox mb={3}>
+        <BlockEditor
+          value={newComment}
+          onChange={(newValue) => setNewComment(newValue)}
+          onSubmit={submitComment}
+          onMention={handleCommentMention}
+          placeholder="Add a comment... (Use @ to mention users)"
+          multiline={true}
+          minRows={3}
+          inputRef={commentInputRef}
+          loading={loading}
+          submitText="Post Comment"
+          submitColor="warning"
+          variant="outlined"
+          size="medium"
+          textFieldProps={{
+            onKeyDown: (e) => handleKeyPress(e, false),
+            helperText: "Press Ctrl+Enter to submit"
+          }}
+        />
+      </MDBox>
+      
+      {/* Loading state */}
+      {loading && pageComments.length === 0 && (
+        <MDBox display="flex" justifyContent="center" p={3}>
+          <MDTypography variant="button" color="text">
+            Loading comments...
+          </MDTypography>
+        </MDBox>
+      )}
+      
+      {/* Error state */}
+      {error && (
+        <MDBox display="flex" justifyContent="center" p={3}>
+          <MDTypography variant="button" color="error">
+            {error}
+          </MDTypography>
+        </MDBox>
+      )}
+      
+      {/* Comments list */}
+      <MDBox>
+        {!loading && !error && commentTree.length === 0 && (
+          <MDBox p={2} textAlign="center">
+            <MDTypography variant="button" color="text">
+              No comments yet.
+            </MDTypography>
+          </MDBox>
+        )}
+        
+        {commentTree.map(comment => renderComment(comment))}
+      </MDBox>
+    </div>
+  );
+};
+
+export default CommentsSection;

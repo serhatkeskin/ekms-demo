@@ -1,0 +1,18 @@
+.file-uploader.compact-mode {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.add-file-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.add-file-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

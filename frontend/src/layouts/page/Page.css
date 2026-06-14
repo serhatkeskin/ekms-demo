@@ -1,0 +1,747 @@
+/* ===========================================
+   PAGE LAYOUT - Base Container Styles
+   =========================================== */
+
+.page-content-container {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  color: #333;
+  line-height: 1.6;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.page-content {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+/* ===========================================
+   PAGE HEADER - Title, Icon, Status
+   =========================================== */
+
+.page-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.page-icon-container {
+  margin-right: 12px;
+}
+
+.page-icon {
+  font-size: 2.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.page-icon.can-edit:hover {
+  background: rgba(55, 53, 47, 0.08);
+}
+
+.page-icon-editor {
+  font-size: 2.5rem;
+  width: 100px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 4px;
+  background: white;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  flex-grow: 1;
+  cursor: pointer;
+}
+
+.page-title:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+  border-radius: 4px;
+}
+
+.page-title:not(.can-edit) {
+  cursor: default !important;
+  background-color: transparent !important;
+}
+
+.page-title:not(.can-edit):hover {
+  background-color: transparent !important;
+}
+
+.page-title.can-edit {
+  cursor: pointer;
+}
+
+.page-title.can-edit:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+
+.page-title-editor {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  flex-grow: 1;
+  width: 100%;
+  border: none;
+  padding: 4px;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.04);
+  font-family: inherit;
+}
+
+.page-title-editor:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.page-status {
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-left: 12px;
+}
+
+.page-status-draft {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.page-status-archived {
+  background-color: #f8f9fa;
+  color: #6c757d;
+}
+
+/* ===========================================
+   COVER IMAGE
+   =========================================== */
+
+.page-cover {
+  position: relative;
+  margin-bottom: 24px;
+  max-height: 300px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.page-cover-image {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.cover-edit-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 0 0 0 8px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.page-cover:hover .cover-edit-overlay {
+  opacity: 1;
+}
+
+.cover-edit-button {
+  background: transparent;
+  border: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.cover-edit-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ===========================================
+   BLOCKNOTE EDITOR CONTAINER
+   =========================================== */
+
+.blocknote-editor-container {
+  margin: 24px 0;
+  padding: 0;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  scroll-behavior: smooth;
+  overflow: visible;
+}
+
+/* BlockNote editor content styling */
+.blocknote-editor-container .bn-container {
+  font-family: inherit;
+  border-radius: 8px;
+  min-height: 300px;
+}
+
+/* Fix side menu (six dots) alignment */
+.blocknote-editor-container .bn-side-menu {
+  left: -50px !important;
+}
+
+.blocknote-editor-container .bn-editor {
+  padding-left: 50px;
+  padding-right: 20px;
+}
+
+/* Toolbar styling */
+.blocknote-editor-container .bn-toolbar {
+  border-bottom: 1px solid #eee;
+  background-color: #fcfcfc;
+  border-radius: 8px 8px 0 0;
+}
+
+/* Block styling in editor */
+.blocknote-editor-container .bn-block {
+  padding: 4px 0;
+}
+
+/* Focus state */
+.blocknote-editor-container .bn-block.bn-selected {
+  background-color: rgba(66, 153, 225, 0.05);
+}
+
+/* Editor height */
+.blocknote-editor-container .bn-root {
+  min-height: 300px;
+}
+
+/* Prevent flash of unstyled content during updates */
+.bn-editor {
+  caret-color: currentColor !important;
+}
+
+/* Ensure headings have proper scroll margin */
+.blocknote-editor-container [data-id] {
+  scroll-margin-top: 100px;
+}
+
+/* Link styling in editor */
+.blocknote-editor-container a {
+  cursor: pointer !important;
+}
+
+.blocknote-editor-container a:hover {
+  text-decoration: underline !important;
+}
+
+/* ===========================================
+   BLOCK HIGHLIGHT ANIMATIONS
+   =========================================== */
+
+.block-highlight {
+  background-color: rgba(255, 255, 0, 0.3) !important;
+  box-shadow: 0 0 0 2px #ffcc00 !important;
+  position: relative !important;
+  z-index: 1 !important;
+  animation: highlight-pulse 3s ease-out;
+}
+
+@keyframes highlight-pulse {
+  0% { background-color: rgba(255, 255, 0, 0.3); }
+  50% { background-color: rgba(255, 255, 0, 0.5); }
+  100% { background-color: rgba(255, 255, 0, 0); }
+}
+
+/* TOC navigation highlight */
+[data-id].toc-highlight {
+  animation: heading-highlight 2s ease;
+}
+
+@keyframes heading-highlight {
+  0%, 20% {
+    background-color: rgba(66, 165, 245, 0.2);
+    outline: 2px solid rgba(66, 165, 245, 0.5);
+    border-radius: 4px;
+  }
+  100% {
+    background-color: transparent;
+    outline: none;
+  }
+}
+
+/* ===========================================
+   SUBPAGES SECTION (Notion-style blocks)
+   =========================================== */
+
+.subpages-section {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.subpages-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.subpage-item {
+  position: relative;
+}
+
+.subpage-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Legacy support - keep old classes for backwards compatibility */
+.page-children {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.children-title {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 12px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.children-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.child-page {
+  background-color: rgba(255, 152, 0, 0.04);
+  padding: 10px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  border-left: 3px solid #ff9800;
+  margin-bottom: 8px;
+}
+
+.child-page:hover {
+  background-color: rgba(255, 152, 0, 0.1);
+}
+
+.child-link {
+  text-decoration: none;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 500;
+}
+
+.child-link:hover {
+  text-decoration: none;
+  color: #333;
+}
+
+.child-link .page-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.no-subpages {
+  padding: 32px 24px;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
+  border: 1px dashed rgba(0, 0, 0, 0.12);
+  color: #6c757d;
+}
+
+/* ===========================================
+   DIALOGS
+   =========================================== */
+
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.dialog {
+  background-color: white;
+  border-radius: 8px;
+  padding: 24px;
+  width: 400px;
+  max-width: 90%;
+}
+
+.dialog-title {
+  margin-top: 0;
+  font-size: 1.25rem;
+}
+
+.dialog-message {
+  margin-bottom: 24px;
+  color: #6c757d;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.dialog-btn {
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.dialog-btn-cancel {
+  background-color: transparent;
+  border: 1px solid #dee2e6;
+  color: #6c757d;
+}
+
+.dialog-btn-confirm {
+  background-color: #007bff;
+  color: white;
+}
+
+.dialog-btn-cancel:hover {
+  background-color: #f8f9fa;
+}
+
+.dialog-btn-confirm:hover {
+  background-color: #0069d9;
+}
+
+/* ===========================================
+   LOADING & STATUS STATES
+   =========================================== */
+
+.page-loading,
+.page-error {
+  text-align: center;
+  padding: 40px;
+  font-size: 1.2rem;
+  color: #6c757d;
+}
+
+.page-error {
+  color: #dc3545;
+}
+
+/* Saving indicator */
+.saving-indicator {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 4px;
+  z-index: 9999;
+}
+
+/* ===========================================
+   COMMENTS SIDEBAR - FIXED POSITION
+   =========================================== */
+
+/* Fixed Comments Sidebar - Modern Floating Panel */
+.comments-sidebar-fixed {
+  /* Positioning is handled in SX prop, but defaults here */
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 10px 15px -3px rgba(0, 0, 0, 0.05),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* Custom Scrollbar - Minimalist */
+.comments-sidebar-fixed::-webkit-scrollbar {
+  width: 5px;
+}
+
+.comments-sidebar-fixed::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 12px 0; /* Add margin to top/bottom of scrollbar */
+}
+
+.comments-sidebar-fixed::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.comments-sidebar-fixed::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* BlockNote ThreadsSidebar Internal Overrides */
+.comments-sidebar-fixed [class*="threads-sidebar"] {
+  padding: 16px;
+  /* Removed layout constraints that might cause crashes */
+}
+
+/* Header styling */
+.comments-sidebar-fixed [class*="threads-sidebar-header"] {
+  padding: 0 0 16px 0;
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  font-weight: 700;
+  font-size: 15px;
+  color: #1a1a1a;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Thread card styling */
+.comments-sidebar-fixed [class*="thread-card"],
+.comments-sidebar-fixed .bn-threads-sidebar .bn-thread {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  margin: 0 0 12px 0;
+  padding: 8px 10px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+  gap: 6px;
+  min-height: unset;
+  height: auto;
+  font-size: 14px;
+  line-height: 1.4;
+  min-width: 0;
+}
+
+.comments-sidebar-fixed [class*="thread-card"]:hover,
+.comments-sidebar-fixed .bn-threads-sidebar .bn-thread:hover {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transform: translateY(-1px);
+}
+
+.comments-sidebar-fixed [class*="thread-card"][class*="selected"],
+.comments-sidebar-fixed .bn-threads-sidebar .bn-thread.selected {
+  border-color: #3b82f6;
+  background: #f0f9ff;
+  box-shadow: 0 0 0 1px #3b82f6;
+}
+
+/* Comment styling inside card */
+.comments-sidebar-fixed [class*="comment"],
+.comments-sidebar-fixed .bn-threads-sidebar .bn-thread-comment {
+  padding: 0;
+  margin: 0;
+  gap: 2px;
+}
+
+/* Author Name */
+.comments-sidebar-fixed [class*="comment-author"],
+.comments-sidebar-fixed .bn-threads-sidebar .bn-thread-comment strong {
+  font-weight: 600;
+  color: #111;
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+
+/* Timestamp */
+.comments-sidebar-fixed [class*="comment-time"] {
+  color: #888;
+  font-size: 11px;
+  font-weight: 400;
+}
+
+/* Comment Body Text */
+.comments-sidebar-fixed [class*="comment-body"],
+.comments-sidebar-fixed .bn-threads-sidebar .bn-thread-comment p {
+  margin-top: 6px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #374151;
+  word-wrap: break-word;
+  margin-bottom: 0;
+}
+
+.comments-sidebar-fixed .bn-threads-sidebar .bn-thread-comments {
+  gap: 6px;
+  padding: 0;
+}
+
+.comments-sidebar-fixed .bn-threads-sidebar .bn-thread .bn-header-text {
+  margin-bottom: 2px;
+  font-size: 13px;
+}
+
+.comments-sidebar-fixed .bn-threads-sidebar .bn-thread .mantine-Card-section {
+  padding: 0;
+}
+
+.comments-sidebar-fixed .bn-threads-sidebar .bn-thread-comment > .mantine-Group-root {
+  gap: 6px;
+  margin: 0;
+}
+
+.comments-sidebar-fixed .bn-threads-sidebar .bn-comment-editor {
+  padding: 0;
+}
+
+.comments-sidebar-fixed .bn-threads-sidebar .bn-comment-editor .bn-editor {
+  min-height: 0;
+  height: auto;
+  padding: 0;
+}
+
+.comments-sidebar-fixed .bn-threads-sidebar .bn-thread-composer {
+  padding: 0;
+}
+
+.comments-sidebar-fixed .bn-threads-sidebar .bn-thread-composer .bn-editor {
+  min-height: 32px !important;
+  height: auto !important;
+  padding: 4px 0 !important;
+}
+
+.comments-sidebar-fixed .bn-threads-sidebar .bn-thread-composer .bn-comment-editor {
+  min-height: 0 !important;
+  height: auto !important;
+}
+
+.comments-sidebar-fixed .bn-threads-sidebar .bn-thread-comments .bn-comment-editor {
+  margin: 0;
+  padding: 0;
+  min-height: 0 !important;
+  height: auto !important;
+}
+
+.comments-sidebar-fixed .bn-threads-sidebar .bn-thread-comments .bn-comment-editor .bn-editor {
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 0 !important;
+  line-height: 1.4;
+}
+
+.comments-sidebar-fixed .bn-threads-sidebar .bn-thread-comments .bn-block-group {
+  margin: 0;
+}
+
+.comments-sidebar-fixed .bn-threads-sidebar .bn-thread-comment p {
+  margin: 0;
+}
+
+/* Enable emoji picker trigger on the add-reaction badge. */
+.comments-sidebar-fixed .bn-comment-add-reaction {
+  cursor: pointer;
+}
+
+.comments-sidebar-fixed .bn-comment-add-reaction .mantine-Chip-input,
+.comments-sidebar-fixed .bn-comment-add-reaction .mantine-Chip-label,
+.comments-sidebar-fixed .bn-comment-add-reaction .mantine-Chip-label * {
+  pointer-events: none;
+}
+
+/* Empty state */
+.comments-sidebar-fixed [class*="empty"] {
+  padding: 40px 20px;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 14px;
+  background: rgba(0,0,0,0.02);
+  border-radius: 12px;
+  border: 1px dashed rgba(0,0,0,0.08);
+  margin-top: 20px;
+}
+
+/* Floating composer styling - ensure visibility */
+[class*="floating-composer"] {
+  z-index: 1000 !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(0,0,0,0.05) !important;
+}
+
+/* Floating composer styling - prevent it from closing */
+[class*="floating-composer"] {
+  z-index: 1000 !important;
+}
+
+[class*="floating-composer"] [class*="editor"],
+[class*="floating-composer"] textarea,
+[class*="floating-composer"] input {
+  pointer-events: auto !important;
+}
+
+/* ===========================================
+   RESPONSIVE STYLES
+   =========================================== */
+
+/* Sidebar visibility - Strict check to prevent overlap */
+/* Content (960px) + Sidebar (380px) + Gap requires significant width */
+@media (max-width: 1550px) {
+  .comments-sidebar-fixed {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-content {
+    max-width: 100%;
+    margin: 0 10px;
+  }
+
+  .blocknote-editor-container .bn-editor {
+    padding-left: 40px;
+    padding-right: 10px;
+  }
+
+  .blocknote-editor-container .bn-side-menu {
+    left: -40px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-content-container {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .blocknote-editor-container .bn-editor {
+    padding-left: 30px;
+    padding-right: 5px;
+  }
+
+  .blocknote-editor-container .bn-side-menu {
+    left: -30px !important;
+  }
+}
