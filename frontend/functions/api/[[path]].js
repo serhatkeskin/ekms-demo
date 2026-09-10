@@ -1,9 +1,10 @@
-const BACKEND_URL = "https://ekms-api.projects.serhatkeskin.com";
+const DEFAULT_BACKEND_URL = "https://ekms-api-production.up.railway.app";
 
 export async function onRequest(context) {
-  const { request } = context;
+  const { request, env } = context;
+  const backendUrl = (env && env.BACKEND_URL) || DEFAULT_BACKEND_URL;
   const url = new URL(request.url);
-  const targetUrl = `${BACKEND_URL}${url.pathname}${url.search}`;
+  const targetUrl = `${backendUrl}${url.pathname}${url.search}`;
 
   const headers = new Headers(request.headers);
   headers.set("X-Forwarded-Host", url.hostname);

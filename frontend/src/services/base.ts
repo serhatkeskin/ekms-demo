@@ -14,7 +14,7 @@ const API_BASE = ENVIRONMENT === "development"
   ? import.meta.env.VITE_API_BASE
   : "/api";
 
-const SOCKET_BASE = ENVIRONMENT === "development"
+const SOCKET_BASE = import.meta.env.VITE_SOCKET_BASE
   ? import.meta.env.VITE_SOCKET_BASE
   : (() => {
       if (typeof window !== "undefined" && window.location.hostname.startsWith("ekms.")) {

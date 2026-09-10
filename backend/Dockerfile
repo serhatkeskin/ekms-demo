@@ -18,4 +18,4 @@ RUN python manage.py collectstatic --noinput 2>/dev/null || true
 
 EXPOSE 8000
 
-CMD ["daphne", "-b", "0.0.0.0", "-p", "8000", "core.asgi:application"]
+CMD ["sh", "-c", "python manage.py migrate --noinput && python manage.py create_demo_data && daphne -b 0.0.0.0 -p ${PORT:-8000} core.asgi:application"]
