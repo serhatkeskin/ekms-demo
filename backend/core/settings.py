@@ -70,7 +70,11 @@ TEMPLATES = [
 DATABASES = {
     "default": dj_database_url.parse(
         os.getenv("DATABASE_URL", f"sqlite:///{BASE_DIR}/db.sqlite3"),
-        conn_max_age=600,
+        # conn_max_age=0: close DB connections after each request so the
+        # service goes quiet when idle and Railway serverless sleep can
+        # engage (a pooled/persistent connection counts as outbound
+        # activity and blocks sleep indefinitely).
+        conn_max_age=0,
     )
 }
 
